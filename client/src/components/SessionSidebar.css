@@ -232,3 +232,41 @@
   color: #888;
   padding: 0 0.5rem;
 }
+
+@media (max-width: 768px) {
+  .toggle-btn {
+    display: none;
+  }
+
+  .session-sidebar {
+    position: fixed;
+    z-index: 1000;
+    transform: translateX(-100%);
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .session-sidebar:not(.collapsed) {
+    transform: translateX(0);
+    width: 280px;
+  }
+
+  .session-sidebar.collapsed {
+    width: 280px;
+    padding: 0.75rem;
+    transform: translateX(-100%);
+  }
+
+  .session-sidebar.collapsed .toggle-btn {
+    margin-left: 0.5rem;
+    width: auto;
+  }
+
+  .session-sidebar.collapsed .new-chat-btn,
+  .session-sidebar.collapsed .session-list,
+  .session-sidebar.collapsed .sidebar-footer {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+}

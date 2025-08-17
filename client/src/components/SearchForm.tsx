@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import './SearchForm.css';
 
 interface SearchFormProps {
@@ -11,7 +11,23 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, loading }) => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [placeholder, setPlaceholder] = useState('질문을 입력하거나 이미지를 붙여넣기 또는 드래그하세요...');
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setPlaceholder('질문 또는 이미지...');
+      } else {
+        setPlaceholder('질문을 입력하거나 이미지를 붙여넣기 또는 드래그하세요...');
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Initial check
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleFile = useCallback((file: File) => {
     if (file && file.type.startsWith('image/')) {
@@ -106,7 +122,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch, loading }) => {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onPaste={handlePaste}
-          placeholder="질문을 입력하거나 이미지를 붙여넣기 또는 드래그하세요..."
+          placeholder={placeholder}
           className="query-input"
           disabled={loading}
         />

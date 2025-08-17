@@ -113,3 +113,15 @@
   text-align: center;
   cursor: pointer;
 }
+
+@media (max-width: 480px) {
+  .input-wrapper {
+    padding: 0.25rem 0.5rem;
+  }
+  .query-input {
+    padding: 0.75rem 0;
+  }
+  .submit-btn {
+    padding: 0.65rem 0.75rem;
+  }
+}

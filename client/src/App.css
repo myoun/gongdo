@@ -207,3 +207,61 @@
   visibility: visible;
   opacity: 1;
 }
+
+.mobile-menu-toggle {
+  display: none;
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1001; /* Above sidebar */
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 0.5rem;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.app-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 999; /* Below sidebar, above content */
+}
+
+@media (max-width: 768px) {
+  .mobile-menu-toggle {
+    display: block;
+  }
+
+  .App:not(.sidebar-collapsed) .mobile-menu-toggle {
+    display: none;
+  }
+
+  .main-content,
+  .App.sidebar-collapsed .main-content {
+    margin-left: 0;
+    width: 100%;
+    transition: none;
+  }
+
+  .App:not(.sidebar-collapsed) .app-overlay {
+    display: block;
+  }
+
+  .chat-container {
+    padding: 1rem;
+  }
+
+  .chat-message-wrapper {
+    max-width: 90%;
+  }
+
+  .initial-view h1 {
+    font-size: 2.5rem;
+  }
+}

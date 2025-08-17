@@ -77,3 +77,9 @@
   from { transform: translateY(-20px) scale(0.95); opacity: 0; }
   to { transform: translateY(0) scale(1); opacity: 1; }
 }
+
+@media (max-width: 768px) {
+  .confirm-modal-panel {
+    max-width: 90%;
+  }
+}

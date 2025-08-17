@@ -64,12 +64,22 @@ function App() {
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [sessionToDelete, setSessionToDelete] = useState<string | null>(null);
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(window.innerWidth < 768);
   const [isInitializing, setIsInitializing] = useState(true);
   const [editingMessageId, setEditingMessageId] = useState<string | null>(null);
   const [editedContent, setEditedContent] = useState('');
 
-  const toggleSidebar = () => setIsSidebarCollapsed(!isSidebarCollapsed);
+  const toggleSidebar = () => setIsSidebarCollapsed(prev => !prev);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setIsSidebarCollapsed(true);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleNewChat = useCallback(async () => {
     const newSession = createNewChatSession(sessions);
@@ -412,6 +422,13 @@ function App() {
         onRenameSession={handleRenameSession}
       />
       <div className="main-content">
+        <button className="mobile-menu-toggle" onClick={toggleSidebar}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
         <div className="chat-container" ref={chatContainerRef}>
           {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
           {activeChatHistory.length === 0 && !streamingMessage && !error && (
@@ -510,6 +527,8 @@ function App() {
           </div>
         </div>
       </div>
+
+      <div className="app-overlay" onClick={toggleSidebar}></div>
 
       {selectedSource && <SourceSidebar source={selectedSource} onClose={handleCloseSidebar} />}
       
