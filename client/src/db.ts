@@ -1,4 +1,5 @@
-import { openDB, DBSchema, IDBPDatabase } from 'idb';
+import { openDB } from 'idb';
+import type { DBSchema, IDBPDatabase } from 'idb';
 import type { Source } from './components/ResultDisplay';
 
 // --- Data Structures ---
@@ -77,13 +78,13 @@ export const saveActiveSessionId = async (sessionId: string | null): Promise<voi
   await db.put('activeSession', sessionId, 'active-session-id');
 };
 
-export const getActiveSessionId = async (): Promise<string | null> => {
+export const getActiveSessionId = async (): Promise<string | null | undefined> => {
   const db = await getDb();
   return db.get('activeSession', 'active-session-id');
 };
 
 // --- Combined Load Function ---
-export const loadDataFromDB = async (): Promise<{ sessions: Session[], activeSessionId: string | null }> => {
+export const loadDataFromDB = async (): Promise<{ sessions: Session[], activeSessionId: string | null | undefined }> => {
   const [sessions, activeSessionId] = await Promise.all([
     getAllSessions(),
     getActiveSessionId()
