@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from qdrant_client import QdrantClient
 import os
-from litellm import completion, embedding
+from litellm import acompletion, aembedding
 import asyncio
 import json
 import re
@@ -76,7 +76,7 @@ async def rewrite_query_multimodal(question: str, chat_history: List[Dict[str, A
     
     logging.info("멀티모달 질문 재작성 중...")
     try:
-        response = completion(
+        response = await acompletion(
             model="gemini/gemini-2.5-pro-preview-06-05",
             messages=messages,
             max_tokens=200,
@@ -103,7 +103,7 @@ async def stream_answer(query: str, chat_history_str: str, image_bytes: Optional
         
         # Step 2: Search documents
         yield json.dumps({"type": "status", "data": f"'{standalone_question}'(으)로 관련 문서를 찾는 중..."}) + "\n"
-        embedding_result = embedding("text-embedding-3-small", standalone_question).data[0]["embedding"]
+        embedding_result = (await aembedding("text-embedding-3-small", standalone_question)).data[0]["embedding"]
 
         logging.info(f"Qdrant에서 '{standalone_question}'(으)로 검색 중...")
         search_result = qdrant_client.search(
@@ -156,14 +156,14 @@ async def stream_answer(query: str, chat_history_str: str, image_bytes: Optional
         messages = [{"role": "user", "content": user_content}]
 
         logging.info("LLM을 통해 최종 답변 생성 시작...")
-        response = completion(
+        response = await acompletion(
             model="gemini/gemini-2.5-pro-preview-06-05",
             messages=messages,
             stream=True
         )
 
         full_answer = ""
-        for chunk in response:
+        async for chunk in response:
             content = chunk.choices[0].delta.content
             if content:
                 full_answer += content

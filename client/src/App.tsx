@@ -274,7 +274,6 @@ function App() {
                 const updatedMsg = { ...prev };
                 if (parsed.type === 'sources') updatedMsg.sources = parsed.data;
                 if (parsed.type === 'token') {
-                  if (status) setStatus('');
                   updatedMsg.content += parsed.data;
                 }
                 if (parsed.type === 'correction') {
