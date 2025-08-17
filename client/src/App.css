@@ -9,18 +9,22 @@
 }
 
 .App {
-  display: flex;
-  height: 100vh;
-  background-color: var(--app-bg-color);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  position: relative;
 }
 
 .main-content {
-  flex-grow: 1;
+  height: 100vh;
+  margin-left: var(--sidebar-width);
+  width: calc(100% - var(--sidebar-width));
+  transition: margin-left 0.3s ease-in-out, width 0.3s ease-in-out;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  transition: margin-left 0.3s ease;
+}
+
+.App.sidebar-collapsed .main-content {
+  margin-left: 68px; /* Collapsed sidebar width */
+  width: calc(100% - 68px);
 }
 
 .chat-container {
@@ -108,4 +112,98 @@
 }
 .chat-container::-webkit-scrollbar-thumb:hover {
   background-color: #aaa;
+}
+
+.message-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.action-button {
+  background: #f1f1f1;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #555;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.action-button:hover {
+  background-color: #e0e0e0;
+  color: #000;
+}
+
+.action-button svg {
+  width: 16px;
+  height: 16px;
+}
+
+.edit-form {
+  width: 100%;
+}
+
+.edit-textarea {
+  width: 100%;
+  min-height: 80px;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  font-family: inherit;
+  font-size: 1rem;
+  resize: vertical;
+  box-sizing: border-box;
+  background-color: #fff;
+  color: #000;
+}
+
+.edit-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.edit-form-actions button {
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.5rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.edit-form-actions button:first-of-type {
+  background-color: #007bff;
+  color: white;
+}
+
+.edit-form-actions button:last-of-type {
+  background-color: #f1f1f1;
+  border-color: #ddd;
+  color: #333;
+}
+
+.user-message-container {
+  display: flex;
+  align-items: center;
+}
+
+.message-actions.on-hover {
+  display: flex;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0.15s, opacity 0.15s;
+  margin-right: 8px;
+  margin-top: 0;
+}
+
+.user-message-container:hover .message-actions.on-hover {
+  visibility: visible;
+  opacity: 1;
 }

@@ -1,13 +1,16 @@
 .session-sidebar {
-  width: var(--sidebar-width);
+  position: fixed;
+  top: 0;
+  left: 0;
   height: 100vh;
+  z-index: 100;
+  width: var(--sidebar-width);
   background-color: #202123;
   color: white;
   display: flex;
   flex-direction: column;
   padding: 0.75rem;
   box-sizing: border-box;
-  flex-shrink: 0;
   transition: width 0.3s ease-in-out;
   overflow-x: hidden;
 }
@@ -187,4 +190,45 @@
   border-radius: 0.5rem;
   outline: none;
   box-sizing: border-box;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid #333;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: flex-start;
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+}
+
+.session-sidebar.collapsed .sidebar-footer {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.footer-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #ccc;
+  text-decoration: none;
+  font-size: 0.9rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  width: 100%;
+  box-sizing: border-box;
+  transition: background-color 0.2s;
+}
+
+.footer-link:hover {
+  background-color: #2a2b32;
+  color: white;
+}
+
+.footer-text {
+  font-size: 0.8rem;
+  color: #888;
+  padding: 0 0.5rem;
 }
