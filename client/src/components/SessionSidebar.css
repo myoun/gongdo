@@ -1,0 +1,106 @@
+.session-sidebar {
+  width: var(--sidebar-width);
+  height: 100vh;
+  background-color: #202123;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.new-chat-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: transparent;
+  color: white;
+  border: 1px solid #555;
+  border-radius: 0.5rem;
+  text-align: left;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-bottom: 1rem;
+}
+
+.new-chat-btn:hover {
+  background-color: #2a2b32;
+}
+
+.session-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.session-item {
+  display: flex;
+  align-items: center;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s;
+}
+
+.session-item:hover {
+  background-color: #2a2b32;
+}
+
+.session-item.active {
+  background-color: #343541;
+}
+
+.session-link {
+  flex-grow: 1;
+  padding: 0.75rem;
+  color: #ececec;
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.session-actions {
+  display: none; /* Hidden by default */
+  padding-right: 0.5rem;
+}
+
+.session-item:hover .session-actions {
+  display: flex; /* Show on hover */
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  color: #ccc;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-btn:hover {
+  color: white;
+  background-color: #40414f;
+}
+
+.action-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.rename-input {
+  width: 100%;
+  background-color: #40414f;
+  border: 1px solid #555;
+  color: white;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  outline: none;
+}
