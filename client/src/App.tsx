@@ -15,6 +15,8 @@ import {
 import SplashScreen from './components/SplashScreen';
 import type { ChatMessage, Session } from './db';
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
+
 // Helper function moved outside the component to prevent re-creation on every render
 const createNewChatSession = (currentSessions: Session[]): Session => {
   const newChatNumbers = currentSessions
@@ -218,7 +220,7 @@ function App() {
         formData.append('image', imageFile);
       }
 
-      const response = await fetch('http://localhost:8000/api/search', {
+      const response = await fetch(`${BACKEND_URL}/api/search`, {
         method: 'POST',
         body: formData,
       });
