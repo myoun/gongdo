@@ -1,0 +1,18 @@
+[project]
+name = "preprocessing"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastembed>=0.7.1",
+    "litellm>=1.75.6",
+    "paddleocr>=3.1.1",
+    "pymupdf>=1.26.3",
+    "qdrant-client>=1.15.1",
+]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=6.30.1",
+]
