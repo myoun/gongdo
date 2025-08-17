@@ -1,6 +1,6 @@
 import React from 'react';
 import './SourceSidebar.css';
-import { Source } from './ResultDisplay';
+import type{ Source } from './ResultDisplay';
 
 interface SourceSidebarProps {
   source: Source;

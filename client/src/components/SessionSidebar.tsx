@@ -9,13 +9,15 @@ interface Session {
 interface SessionSidebarProps {
   sessions: Session[];
   activeSessionId: string | null;
+  isCollapsed: boolean;
+  onToggle: () => void;
   onNewChat: () => void;
   onSelectSession: (id: string) => void;
   onDeleteSession: (id: string) => void;
   onRenameSession: (id: string, newName: string) => void;
 }
 
-const SessionSidebar: React.FC<SessionSidebarProps> = ({ sessions, activeSessionId, onNewChat, onSelectSession, onDeleteSession, onRenameSession }) => {
+const SessionSidebar: React.FC<SessionSidebarProps> = ({ sessions, activeSessionId, isCollapsed, onToggle, onNewChat, onSelectSession, onDeleteSession, onRenameSession }) => {
   const [editingSessionId, setEditingSessionId] = useState<string | null>(null);
   const [renameValue, setRenameValue] = useState('');
 
@@ -40,15 +42,26 @@ const SessionSidebar: React.FC<SessionSidebarProps> = ({ sessions, activeSession
   };
 
   return (
-    <div className="session-sidebar">
-      <button className="new-chat-btn" onClick={onNewChat}>
-        + New Chat
-      </button>
+    <div className={`session-sidebar ${isCollapsed ? 'collapsed' : ''}`}>
+      <div className="sidebar-header">
+        <button className="new-chat-btn" onClick={onNewChat}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          <span>새로운 채팅</span>
+        </button>
+        <button className="toggle-btn" onClick={onToggle}>
+          {isCollapsed ? (
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M15 3v18"/><path d="m8 15 3-3-3-3"/></svg>
+          ) : (
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/><path d="m16 15-3-3 3-3"/></svg>
+          )}
+        </button>
+      </div>
       <nav className="session-list">
         {sessions.map(session => (
           <div 
             key={session.id} 
             className={`session-item ${session.id === activeSessionId ? 'active' : ''}`}
+            title={session.name}
           >
             {editingSessionId === session.id ? (
               <input
@@ -66,12 +79,12 @@ const SessionSidebar: React.FC<SessionSidebarProps> = ({ sessions, activeSession
                   {session.name}
                 </a>
                 <div className="session-actions">
-                  <button onClick={() => handleRenameStart(session)} className="action-btn">
+                  <button onClick={() => handleRenameStart(session)} className="action-btn" title="Rename">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
                     </svg>
                   </button>
-                  <button onClick={() => onDeleteSession(session.id)} className="action-btn">
+                  <button onClick={() => onDeleteSession(session.id)} className="action-btn" title="Delete">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <polyline points="3 6 5 6 21 6"></polyline>
                       <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>

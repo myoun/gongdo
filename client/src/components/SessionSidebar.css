@@ -8,11 +8,29 @@
   padding: 0.75rem;
   box-sizing: border-box;
   flex-shrink: 0;
+  transition: width 0.3s ease-in-out;
+  overflow-x: hidden;
+}
+
+.session-sidebar.collapsed {
+  width: 68px;
+  padding: 0.75rem;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  flex-shrink: 0;
 }
 
 .new-chat-btn {
-  width: 100%;
-  padding: 0.75rem;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem;
   background-color: transparent;
   color: white;
   border: 1px solid #555;
@@ -20,11 +38,50 @@
   text-align: left;
   font-size: 0.9rem;
   cursor: pointer;
-  transition: background-color 0.2s;
-  margin-bottom: 1rem;
+  transition: background-color 0.2s, opacity 0.2s ease-in-out;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .new-chat-btn:hover {
+  background-color: #2a2b32;
+}
+
+.session-sidebar.collapsed .sidebar-header {
+  justify-content: center;
+}
+
+.session-sidebar.collapsed .new-chat-btn {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  width: 0;
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+
+.toggle-btn {
+  background: none;
+  border: 1px solid #555;
+  color: #ccc;
+  cursor: pointer;
+  padding: 0.65rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+  margin-left: 0.5rem;
+  flex-shrink: 0;
+}
+
+.session-sidebar.collapsed .toggle-btn {
+  margin-left: 0;
+  width: 100%;
+}
+
+.toggle-btn:hover {
   background-color: #2a2b32;
 }
 
@@ -34,13 +91,38 @@
   gap: 0.25rem;
   overflow-y: auto;
   flex-grow: 1;
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
 }
+
+.session-sidebar.collapsed .session-list {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Custom scrollbar for session list */
+.session-list::-webkit-scrollbar {
+  width: 6px;
+}
+.session-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+.session-list::-webkit-scrollbar-thumb {
+  background-color: #40414f;
+  border-radius: 10px;
+}
+.session-list::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
 
 .session-item {
   display: flex;
   align-items: center;
   border-radius: 0.5rem;
   transition: background-color 0.2s;
+  height: 52px;
+  flex-shrink: 0;
 }
 
 .session-item:hover {
@@ -65,6 +147,7 @@
 .session-actions {
   display: none; /* Hidden by default */
   padding-right: 0.5rem;
+  white-space: nowrap;
 }
 
 .session-item:hover .session-actions {
@@ -103,4 +186,5 @@
   padding: 0.75rem;
   border-radius: 0.5rem;
   outline: none;
+  box-sizing: border-box;
 }

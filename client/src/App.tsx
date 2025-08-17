@@ -46,6 +46,11 @@ function App() {
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [sessionToDelete, setSessionToDelete] = useState<string | null>(null);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarCollapsed(!isSidebarCollapsed);
+  };
 
   // --- Effects ---
   useEffect(() => {
@@ -69,23 +74,24 @@ function App() {
   }, [sessions, streamingMessage, status]);
 
   // --- Handlers ---
-  const handleNewChat = () => {
-    // Find the highest existing "New Chat" number to avoid duplicates
-    const newChatNumbers = sessions
+  const createNewChatSession = (currentSessions: Session[]): Session => {
+    const newChatNumbers = currentSessions
       .map(s => {
-        const match = s.name.match(/^New Chat (\d+)$/);
+        const match = s.name.match(/^(?:New Chat|새로운 채팅) (\d+)$/);
         return match ? parseInt(match[1], 10) : 0;
       })
       .filter(num => num > 0);
     const nextChatNumber = newChatNumbers.length > 0 ? Math.max(...newChatNumbers) + 1 : 1;
 
-    const newSession: Session = {
+    return {
       id: `session-${Date.now()}`,
-      name: `New Chat ${nextChatNumber}`,
+      name: `새로운 채팅 ${nextChatNumber}`,
       history: [],
     };
-    
-    // Prepend the new session to the beginning of the array
+  };
+
+  const handleNewChat = () => {
+    const newSession = createNewChatSession(sessions);
     setSessions(prev => [newSession, ...prev]);
     setActiveSessionId(newSession.id);
     setStreamingMessage(null);
@@ -112,9 +118,14 @@ function App() {
       const newSessions = prev.filter(s => s.id !== sessionToDelete);
       if (activeSessionId === sessionToDelete) {
         if (newSessions.length > 0) {
-          setActiveSessionId(newSessions[0].id); // Switch to the new first session
+          setActiveSessionId(newSessions[0].id);
         } else {
-          handleNewChat(); // Create a new one if all are deleted
+          const newSession = createNewChatSession(newSessions); // Pass the empty array
+          setActiveSessionId(newSession.id);
+          setStreamingMessage(null);
+          setError('');
+          setStatus('');
+          return [newSession];
         }
       }
       return newSessions;
@@ -238,10 +249,12 @@ function App() {
   const activeChatHistory = sessions.find(s => s.id === activeSessionId)?.history || [];
 
   return (
-    <div className="App">
+    <div className={`App ${isSidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
       <SessionSidebar 
         sessions={sessions}
         activeSessionId={activeSessionId}
+        isCollapsed={isSidebarCollapsed}
+        onToggle={toggleSidebar}
         onNewChat={handleNewChat}
         onSelectSession={handleSelectSession}
         onDeleteSession={handleDeleteSession}
